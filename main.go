@@ -8,6 +8,7 @@ import (
 
 	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
 	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
+	database "github.com/fizzfuzzHK/line_bot_fav/infrastrcture/database"
 	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/sirupsen/logrus"
@@ -22,7 +23,7 @@ func main() {
 	}
 	defer db.Close()
 
-	userRepo := infrastructure.NewDbClient(db)
+	userRepo := database.NewUserRepository(db)
 	u := new(domain.User)
 
 	e := echo.New()
