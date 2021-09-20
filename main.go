@@ -21,14 +21,6 @@ func main() {
 	// res := weather.GetWeather()
 	// テキストメッセージを生成する
 	// テキストメッセージを友達登録しているユーザー全員に配信する
-	bot, err := linebot.New(
-		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
-		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
-	)
-	if err != nil {
-		log.Fatal(err)
-	}
-
 }
 
 func handlerMainPage() echo.HandlerFunc {
