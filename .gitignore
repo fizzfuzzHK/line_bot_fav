@@ -15,5 +15,5 @@
 # vendor/
 
 #env 
-*.env
-*.envrc
+.env
+.envrc
