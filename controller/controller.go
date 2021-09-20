@@ -13,7 +13,7 @@ import (
 )
 
 type LineBotController struct {
-	u              *domain.User
+	user           *domain.User
 	userRepository *database.UserRepository
 	bot            *linebot.Client
 }
@@ -30,7 +30,7 @@ func NewLineBotController(userRepository *database.UserRepository) *LineBotContr
 	user := &domain.User{}
 
 	return &LineBotController{
-		u:              user,
+		user:           user,
 		userRepository: userRepository,
 		bot:            bot,
 	}
@@ -68,8 +68,8 @@ func (controller *LineBotController) HandleEvents() echo.HandlerFunc {
 					}
 				}
 			} else if event.Type == linebot.EventTypeFollow {
-				controller.u.UserId = event.Source.UserID
-				controller.userRepository.AddUser(controller.u.UserId)
+				controller.user.UserId = event.Source.UserID
+				controller.userRepository.AddUser(controller.user.UserId)
 
 			}
 		}
