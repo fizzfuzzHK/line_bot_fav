@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/labstack/echo/v4"
+	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
