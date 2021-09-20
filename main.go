@@ -3,10 +3,7 @@ package main
 import (
 	"os"
 
-	controller "github.com/fizzfuzzHK/line_bot_fav/controller"
-	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
 	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
-	database "github.com/fizzfuzzHK/line_bot_fav/infrastrcture/database"
 	echo "github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )
@@ -20,14 +17,10 @@ func main() {
 	}
 	defer db.Close()
 
-	userRepo := database.NewUserRepository(db)
-	user := new(domain.User)
-
 	e := echo.New()
-
-	e.POST("/callback", controller.HandlerMainPage(userRepo, user))
-
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
+
+	Initialize(e, db)
 	// LINE Botクライアント生成する
 	// BOT にはチャネルシークレットとチャネルトークンを環境変数から読み込み引数に渡す
 	// res := weather.GetWeather()
