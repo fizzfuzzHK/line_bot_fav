@@ -6,26 +6,28 @@ import (
 	"net/http"
 	"os"
 
+	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
+	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
+	"github.com/jinzhu/gorm"
 	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
+	"github.com/sirupsen/logrus"
 )
 
 func main() {
-	// db, err := infrastructure.Connect()
-	// if err != nil {
-	// 	logrus.Infof("Error connecting DB: %v", err)
-	// 	// Heroku用 アプリの起動に合わせてDBが起動できないことがあるので再接続を試みる
-	// 	db, _ = infrastructure.Connect()
-	// }
-	// defer db.Close()
+	db, err := infrastructure.Connect()
+	if err != nil {
+		logrus.Infof("Error connecting DB: %v", err)
+		// Heroku用 アプリの起動に合わせてDBが起動できないことがあるので再接続を試みる
+		db, _ = infrastructure.Connect()
+	}
+	defer db.Close()
 
-	// user := new(domain.User)
-	// user.UserId = "0012"
-	// db.Create(&user)
+	u := new(domain.User)
 
 	e := echo.New()
 
-	e.POST("/callback", handlerMainPage())
+	e.POST("/callback", handlerMainPage(db, u))
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 	// LINE Botクライアント生成する
@@ -36,7 +38,7 @@ func main() {
 
 }
 
-func handlerMainPage() echo.HandlerFunc {
+func handlerMainPage(db *gorm.DB, u *domain.User) echo.HandlerFunc {
 	return func(c echo.Context) error { //c をいじって Request, Responseを色々する
 		fmt.Println("callbacked")
 		bot, err := linebot.New(
@@ -77,8 +79,9 @@ func handlerMainPage() echo.HandlerFunc {
 					}
 				}
 			} else if event.Type == linebot.EventTypeFollow {
-				user := event.Source.UserID
-				fmt.Println(user)
+				u.UserId = event.Source.UserID
+				db.Create(&u)
+
 			} else if event.Type == linebot.EventTypeUnfollow {
 				user := event.Source.UserID
 				fmt.Println(user)
