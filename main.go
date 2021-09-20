@@ -3,7 +3,7 @@ package main
 import (
 	"os"
 
-	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
+	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastructure"
 	echo "github.com/labstack/echo/v4"
 	"github.com/sirupsen/logrus"
 )

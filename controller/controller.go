@@ -7,7 +7,7 @@ import (
 	"os"
 
 	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
-	"github.com/fizzfuzzHK/line_bot_fav/infrastrcture/database"
+	"github.com/fizzfuzzHK/line_bot_fav/infrastructure/database"
 	"github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 )

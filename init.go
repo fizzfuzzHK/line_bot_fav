@@ -2,8 +2,8 @@ package main
 
 import (
 	controller "github.com/fizzfuzzHK/line_bot_fav/controller"
-	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
-	database "github.com/fizzfuzzHK/line_bot_fav/infrastrcture/database"
+	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastructure"
+	database "github.com/fizzfuzzHK/line_bot_fav/infrastructure/database"
 	echo "github.com/labstack/echo/v4"
 
 	"github.com/jmoiron/sqlx"
