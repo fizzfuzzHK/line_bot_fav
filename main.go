@@ -39,7 +39,7 @@ func main() {
 
 }
 
-func handlerMainPage(i infrastructure.IUserRepository, u *domain.User) echo.HandlerFunc {
+func handlerMainPage(i database.IUserRepository, u *domain.User) echo.HandlerFunc {
 	return func(c echo.Context) error { //c をいじって Request, Responseを色々する
 		fmt.Println("callbacked")
 		bot, err := linebot.New(
