@@ -6,11 +6,28 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/sirupsen/logrus"
+
+	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
+	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
+
 	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 )
 
 func main() {
+	db, err := infrastructure.Connect()
+	if err != nil {
+		logrus.Infof("Error connecting DB: %v", err)
+		// Heroku用 アプリの起動に合わせてDBが起動できないことがあるので再接続を試みる
+		db, _ = infrastructure.Connect()
+	}
+	defer db.Close()
+
+	user := new(domain.User)
+	user.UserId = "0012"
+	db.Create(&user)
+
 	e := echo.New()
 
 	e.POST("/callback", handlerMainPage())
@@ -21,6 +38,7 @@ func main() {
 	// res := weather.GetWeather()
 	// テキストメッセージを生成する
 	// テキストメッセージを友達登録しているユーザー全員に配信する
+
 }
 
 func handlerMainPage() echo.HandlerFunc {
@@ -62,6 +80,12 @@ func handlerMainPage() echo.HandlerFunc {
 						}
 					}
 				}
+			} else if event.Type == linebot.EventTypeFollow {
+				user := event.Source.UserID
+				fmt.Print(user)
+			} else if event.Type == linebot.EventTypeUnfollow {
+				user := event.Source.UserID
+				fmt.Print(user)
 			}
 		}
 		return c.String(http.StatusOK, "")
