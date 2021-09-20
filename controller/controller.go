@@ -23,7 +23,6 @@ func NewLineBotController(userRepository *database.UserRepository) *LineBotContr
 		os.Getenv("LINE_BOT_CHANNEL_SECRET"),
 		os.Getenv("LINE_BOT_CHANNEL_TOKEN"),
 	)
-	// エラーに値があればログに出力し終了する
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -38,7 +37,7 @@ func NewLineBotController(userRepository *database.UserRepository) *LineBotContr
 }
 
 func (controller *LineBotController) HandleEvents() echo.HandlerFunc {
-	return func(c echo.Context) error { //c をいじって Request, Responseを色々する
+	return func(c echo.Context) error {
 
 		events, err := controller.bot.ParseRequest(c.Request())
 		if err != nil {

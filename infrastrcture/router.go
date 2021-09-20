@@ -1,4 +1,4 @@
-package main
+package infrastructure
 
 import (
 	controller "github.com/fizzfuzzHK/line_bot_fav/controller"
