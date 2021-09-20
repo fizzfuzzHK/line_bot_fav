@@ -1,6 +1,6 @@
 CREATE TABLE users (
   id int PRIMARY KEY AUTO_INCREMENT,
-  user_id int NOT NULL,
+  user_id varchar(255) NOT NULL,
   created_at datetime DEFAULT CURRENT_TIMESTAMP,
   updated_at datetime DEFAULT CURRENT_TIMESTAMP
 );
@@ -16,7 +16,7 @@ CREATE TABLE places (
 
 CREATE TABLE fav (
   id int PRIMARY KEY AUTO_INCREMENT,
-  user_id int NOT NULL,
+  user_id varchar(255)  NOT NULL,
   place_id int NOT NULL,
   created_at datetime DEFAULT CURRENT_TIMESTAMP
 );

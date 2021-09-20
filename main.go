@@ -8,7 +8,6 @@ import (
 
 	domain "github.com/fizzfuzzHK/line_bot_fav/domain"
 	infrastructure "github.com/fizzfuzzHK/line_bot_fav/infrastrcture"
-	"github.com/jinzhu/gorm"
 	echo "github.com/labstack/echo/v4"
 	"github.com/line/line-bot-sdk-go/linebot"
 	"github.com/sirupsen/logrus"
@@ -23,11 +22,12 @@ func main() {
 	}
 	defer db.Close()
 
+	userRepo := infrastructure.NewDbClient(db)
 	u := new(domain.User)
 
 	e := echo.New()
 
-	e.POST("/callback", handlerMainPage(db, u))
+	e.POST("/callback", handlerMainPage(userRepo, u))
 
 	e.Logger.Fatal(e.Start(":" + os.Getenv("PORT")))
 	// LINE Botクライアント生成する
@@ -38,7 +38,7 @@ func main() {
 
 }
 
-func handlerMainPage(db *gorm.DB, u *domain.User) echo.HandlerFunc {
+func handlerMainPage(i infrastructure.IUserRepository, u *domain.User) echo.HandlerFunc {
 	return func(c echo.Context) error { //c をいじって Request, Responseを色々する
 		fmt.Println("callbacked")
 		bot, err := linebot.New(
@@ -80,11 +80,8 @@ func handlerMainPage(db *gorm.DB, u *domain.User) echo.HandlerFunc {
 				}
 			} else if event.Type == linebot.EventTypeFollow {
 				u.UserId = event.Source.UserID
-				db.Create(&u)
+				i.AddUser(u.UserId)
 
-			} else if event.Type == linebot.EventTypeUnfollow {
-				user := event.Source.UserID
-				fmt.Println(user)
 			}
 		}
 		return c.String(http.StatusOK, "")
