@@ -60,6 +60,7 @@ func handlerMainPage() echo.HandlerFunc {
 
 		for _, event := range events {
 			if event.Type == linebot.EventTypeMessage {
+				fmt.Println("message delivered")
 				switch message := event.Message.(type) {
 				case *linebot.TextMessage:
 					replyMessage := message.Text
@@ -82,10 +83,10 @@ func handlerMainPage() echo.HandlerFunc {
 				}
 			} else if event.Type == linebot.EventTypeFollow {
 				user := event.Source.UserID
-				fmt.Print(user)
+				fmt.Println(user)
 			} else if event.Type == linebot.EventTypeUnfollow {
 				user := event.Source.UserID
-				fmt.Print(user)
+				fmt.Println(user)
 			}
 		}
 		return c.String(http.StatusOK, "")
